@@ -1,0 +1,15 @@
+﻿Static text
+
+†prop1†
+
+{{desc
+Описание
+}}
+
+†table1†|†col1†|†col2†|†col3†|{{desc()}}|
+
+{{desc()}}
+
+†prop2†
+
+†table2†|†col1†|†col2†|†col3† {{desc()}}|

@@ -1,0 +1,20 @@
+﻿Static text
+
+value1
+
+{{desc
+Дополненное описание
+}}
+
+|r1c1|col2|r1c3|{{desc(description for row 1)}}|
+|r2c1||r2c3|{{desc(description for row 2)}}|
+|r3c1|col2|r3c3|{{desc()}}|
+
+{{desc(Описание 222)}}
+
+value2 value2 value2
+
+|Tr1c1|T2r1c2|col3 {{desc(доп описание)}}|
+|Tr2c1|T2r2c2| {{desc(комментарий)}}|
+|Tr3c1|T2r3c2|col3col3 {{desc()}}|
+|Tr3c1|T2r4c2| {{desc(очень длинный комментарий)}}|

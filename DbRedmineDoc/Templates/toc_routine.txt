@@ -1,0 +1,3 @@
+﻿
+|Тип|Название|Возвращает|Пишет|Строк×10|⮆O|O⮆|..cs|
+†_toc_†|†type_image†|[[†_name†]]|†return†|=.†data_access†|>.†loc10†|>.†calleeN†|>.†callerN†|>.†codeCalls†|

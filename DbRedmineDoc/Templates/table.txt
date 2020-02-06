@@ -1,0 +1,21 @@
+﻿h2. †_name†
+
+h6. †_updated†
+_TODO: link to sources_ 
+
+{{desc
+Описание таблицы
+}}
+
+h3. Столбцы
+
+|_.№|_.Название|_.Тип|_.Размер|_.Описание|
+†columns†|†col_i†|†col_name†|†col_type†|>.†col_size†|†col_fk† {{desc()}}|
+
+h3. Является внешним ключом для:
+
+†foreign†* [[†foreign_name†]]
+
+h3. Используется в коде
+
+†used†* !/dbdoc/†used_type†.png! [[†used_name†]]

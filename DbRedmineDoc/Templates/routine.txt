@@ -1,0 +1,35 @@
+﻿h2. †_name†
+
+h6. †_updated†
+_TODO: link to sources_ 
+
+h3. †type_rus†
+
+{{desc
+Описание
+}}
+
+h3. Параметры
+
+†params†|†param_id†|†param_name†|†param_type†|{{desc()}}|
+
+h3. Возвращаемое значение
+
+†scalarResult†
+{{desc()}}
+†result†|†result_order†|†result_name†|†result_type†|{{desc()}}|
+
+h3. Обращается к:
+
+†call†* †call_db†[[†call_name†]] †call_update†
+
+h3. Вызывается из:
+
+†callee†* †callee_name†
+
+h3. Упоминается в:
+
+†git_source†* †file†
+
+
+
