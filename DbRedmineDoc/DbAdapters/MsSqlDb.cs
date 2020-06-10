@@ -24,8 +24,9 @@ namespace DbRedmineDoc.DbAdapters
 
         private const string qRoutinesList = "SELECT LTRIM(REPLACE(' ' + REPLACE(' ' + ROUTINE_NAME, ' fn_', ''), ' clrfn_', '')), " +
             "ROUTINE_NAME, ROUTINE_TYPE, DATA_TYPE, ROUTINE_BODY, SQL_DATA_ACCESS, LAST_ALTERED, ROUTINE_SCHEMA, " +
-            "(LEN(ROUTINE_DEFINITION)-LEN(REPLACE(ROUTINE_DEFINITION, char(10),'')))/10+1 loc10 " + 
+            "(LEN(OBJECT_DEFINITION (OBJECT_ID(ROUTINE_NAME)))-LEN(REPLACE(OBJECT_DEFINITION (OBJECT_ID(ROUTINE_NAME)), char (10),'')))/10+1 loc10 " + 
             "FROM INFORMATION_SCHEMA.ROUTINES order by 1";
+
 
         private const string qRoutineReferenced = "SELECT db.name dbname, referenced_entity_name, MAX(CAST(is_updated AS int)) " +
             "FROM sys.dm_sql_referenced_entities(N'{0}.{1}', 'OBJECT')  " +
@@ -230,7 +231,7 @@ namespace DbRedmineDoc.DbAdapters
                         d["return"] = reader.IsDBNull(3) ? "" : reader.GetString(3);
                         d["data_access"] = reader.GetString(5) == "MODIFIES" ? markup.MakeImageLink("updated") : "";
                         d["schema"] = reader.GetString(7);
-                        d["loc10"] = reader.IsDBNull(8) ? "?" : reader.GetInt32(8).ToString();
+                        d["loc10"] = reader.IsDBNull(8) ? "?" : reader.GetInt64(8).ToString();
 
                         if (d["type"] == "FUNCTION")
                         {

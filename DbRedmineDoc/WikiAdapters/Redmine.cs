@@ -40,7 +40,7 @@ namespace DbRedmineDoc.WikiAdapters
             }
             else
             {
-                return (null, DateTime.MaxValue);
+                return ("", DateTime.MaxValue);
             }
         }
 

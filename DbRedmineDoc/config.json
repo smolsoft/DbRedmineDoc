@@ -3,7 +3,7 @@
 	{
 		"DbConnectionString": "user secret",
 		"RedmineKey": "user secret",
-		"RedmineRoot": "http://10.1.1.11/redmine/projects/aius",
+		"RedmineRoot": "http://10.1.1.11/redmine/projects/aius-linux",
 		"GitRootPath": "C:\\GIT\\AICS",
 		"GitSourcesMask": "*.cs"
 	}
