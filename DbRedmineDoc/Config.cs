@@ -16,5 +16,11 @@ namespace DbRedmineDoc
         public string GitRootPath { get; set; }
 
         public string GitSourcesMask { get; set; }
+
+        public string PgGitRootPath { get; set; }
+
+        public string TestResultFilePath { get; set; }
+
+        public string TestQueriesPath { get; set; }
     }
 }

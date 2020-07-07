@@ -1,7 +1,7 @@
 ﻿h2. †_name†
 
 h6. †_updated†
-_TODO: link to sources_ 
+PG src: †pgGitSourceLink† 
 
 h3. †type_rus†
 
@@ -30,6 +30,11 @@ h3. Вызывается из:
 h3. Упоминается в:
 
 †git_source†* †file†
+
+h3. Результаты тестирования:
+
+†testResult†|†compareResults†|†timePercent†|†timeAbsolute†|†error†|†msQuery†|†pgQuery†|
+
 
 
 

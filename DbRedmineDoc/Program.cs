@@ -35,6 +35,8 @@ namespace DbRedmineDoc
             // init DB adapters
             MsSqlDb db = new MsSqlDb(cfg.DbConnectionString, markup);
             GitSources git = new GitSources(cfg.GitRootPath, cfg.GitSourcesMask, markup);
+            PgGitSource pgGit = new PgGitSource(cfg.PgGitRootPath, "*.sql", markup);
+            TestResults tests = new TestResults(cfg.TestResultFilePath, cfg.TestQueriesPath);
 
             // init wiki sections
             DbObjectsList tables = new DbObjectsList("Таблицы_AICS_AreaPassport", "table.txt");
@@ -44,11 +46,21 @@ namespace DbRedmineDoc
             db.GetTables(tables);
             db.GetRoutines(routines);
             git.AddCallers(routines);
+            pgGit.AddMarks(routines);
+            tests.AddTestResult(routines);
 
             // save to wiki
-            Task.WaitAll(
-                SaveSection(tables, wiki), 
-                SaveSection(routines, wiki));
+            try
+            {
+                Task.WaitAll(
+                    /*SaveSection(tables, wiki),*/
+                    SaveSection(routines, wiki));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
             
         }
 
