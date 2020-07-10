@@ -13,6 +13,8 @@ namespace DbRedmineDoc
 
         public string RedmineRoot { get; set; }
 
+        public string Steps { get; set; }
+
         public string GitRootPath { get; set; }
 
         public string GitSourcesMask { get; set; }

@@ -24,7 +24,9 @@ namespace DbRedmineDoc.DbAdapters
             var files = GetFiles(projectRoot);
             foreach (DbObject d in list)
             {
-                string fileName = files.Where(f => d.Name == Path.GetFileNameWithoutExtension(f)).FirstOrDefault();
+                string fileName = files
+                    .Where(f => string.Equals(d.Name, Path.GetFileNameWithoutExtension(f), StringComparison.InvariantCultureIgnoreCase))
+                    .FirstOrDefault();
                 d["pgGitSourceMark"] = string.IsNullOrEmpty(fileName) ? "" : "X";
                 d["pgGitSourceLink"] = string.IsNullOrEmpty(fileName) ? "" : 
                     markup.MakeSourceLink(fileName.Substring(projectRoot.Length));

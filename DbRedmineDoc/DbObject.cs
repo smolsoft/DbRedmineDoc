@@ -9,11 +9,15 @@ namespace DbRedmineDoc
     public class DbObject : IDictionary<string, string>
     {
         private readonly string name;
-        private readonly DateTime lastUpdated;
+        private DateTime lastUpdated;
 
         public string Name { get => name; } 
 
-        public DateTime LastUpdated {  get => lastUpdated; }
+        public DateTime LastUpdated
+        {
+            get => lastUpdated;
+            set { lastUpdated = value; values["_updated"] = lastUpdated.ToString(); }
+        }
 
 
         private readonly Dictionary<string, string> values;

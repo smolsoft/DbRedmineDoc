@@ -4,6 +4,8 @@
 		"DbConnectionString": "user secret",
 		"RedmineKey": "user secret",
 		"RedmineRoot": "http://10.1.1.11/redmine/projects/aius-linux",
+		"_possibleSteps": "Tables,Routines,CheckSources,CheckPostgres,CheckTests",
+		"Steps": "Routines,CheckPostgres,CheckTests",
 		"GitRootPath": "C:\\GIT\\AICS",
 		"GitSourcesMask": "*.cs",
 		"PgGitRootPath": "C:\\GIT\\GRIP\\grip-db",

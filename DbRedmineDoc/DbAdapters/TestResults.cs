@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.IO;
 
@@ -25,17 +26,16 @@ namespace DbRedmineDoc.DbAdapters
                 }
             }
 
-            public int absTimeDiff
+            public int avgTimeMS
             {
-                get
-                {
-                    int time = 0;
-                    if (testCalls != null)
-                        foreach (TestCall c in testCalls)
-                            time = Math.Max(time, int.Parse(c.timeDiffAbsolute.Split(' ')[0]));
-                    return time;
-                }
+                get { return testCalls == null ? 0 : (int)testCalls.Select(c => int.Parse(c.timeMS)).Average(); }
             }
+
+            public int avgTimePG
+            {
+                get { return testCalls == null ? 0 : (int)testCalls.Select(c => int.Parse(c.timePG)).Average(); }
+            }
+
         }
 
         class TestCall
@@ -43,8 +43,8 @@ namespace DbRedmineDoc.DbAdapters
             public string msQuery;
             public string pgQuery;
             public string compareResult;
-            public string timeDiffPercent;
-            public string timeDiffAbsolute;
+            public string timeMS;
+            public string timePG;
             public string error;
         }
 
@@ -61,22 +61,26 @@ namespace DbRedmineDoc.DbAdapters
         public DbObjectsList AddTestResult(DbObjectsList list)
         {
             Dictionary<string, TestResult> tests = ParseTestResults(testReportPath);
+            DateTime updated = File.GetLastWriteTime(testReportPath);
+
             foreach (DbObject d in list)
                 if (tests.ContainsKey(d.Name))
                 {
                     TestResult test = tests[d.Name];
                     d["pgCallTransform"] = test.transform;
-                    d["pgTestTimeDiffA"] = test.absTimeDiff.ToString();
+                    d["pgTestTimeDiffA"] = $"{test.avgTimePG - test.avgTimeMS} ms";
                     d["pgTestResult"] = test.result ? "OK" : "FAILED";
                     foreach (var t in test.testCalls)
                         d.AddTableRow("testResult", new (string, string)[] {
                             ("compareResults", t.compareResult),
-                            ("timePercent", t.timeDiffPercent),
-                            ("timeAbsolute", t.timeDiffAbsolute),
+                            ("testMStime", $"{t.timeMS} ms"),
+                            ("testPGtime", $"{t.timePG} ms"),
                             ("error", t.error),
                             ("msQuery", t.msQuery),
                             ("pgQuery", t.pgQuery),
                         });
+                    if (d.LastUpdated < updated)
+                        d.LastUpdated = updated;
                 }
                 else
                 {
@@ -116,8 +120,8 @@ namespace DbRedmineDoc.DbAdapters
                 tr.testCalls.Add(new TestCall
                 {
                     compareResult = parts[3],
-                    timeDiffPercent = parts[4],
-                    timeDiffAbsolute = parts[5],
+                    timeMS = parts[4],
+                    timePG = parts[5],
                     error = parts[6],
                     msQuery = qParts[0],
                     pgQuery = qParts[1]

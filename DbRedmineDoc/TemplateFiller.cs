@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace DbRedmineDoc
 {
@@ -57,6 +58,95 @@ namespace DbRedmineDoc
             string resultBuilded = result.ToString();
             return template.Length < resultBuilded.Length ? resultBuilded : string.Empty;
         }
+
+        public string UpdateTocTemplateByName(string template, DbObjectsList list, string currentContent)
+        {
+            StringBuilder append = new StringBuilder(template);
+
+            (string toReplace, string rowTemplate) = GetRowTemplate(template, "_toc_");
+            append.Replace(toReplace, "");
+
+            List<string> contentLines = SplitToLines(currentContent);
+            Dictionary<string, int> nameIndex = GetNameIndex(contentLines, rowTemplate);
+
+            foreach (var i in list)
+            {
+                // заполняем шаблон строки
+                StringBuilder strRow = new StringBuilder(rowTemplate);
+                foreach (var col in i.Keys)
+                    strRow.Replace(Place(col), i[col]);
+
+                // заменяем или дополняем
+                if (nameIndex.ContainsKey(i.Name))
+                    contentLines[nameIndex[i.Name]] = strRow.ToString();
+                else
+                    append.AppendLine(strRow.ToString());
+            }
+
+            // собираем обновленные строки
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < contentLines.Count; i++)
+                result.AppendLine(contentLines[i]);
+
+            string resultBuilded = result.ToString() + append.ToString();
+            return template.Length < resultBuilded.Length ? resultBuilded : string.Empty;
+        }
+
+
+        private List<string> SplitToLines(string content)
+        {
+            List<string> result = new List<string>();
+            using (StringReader sr = new StringReader(content))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                    result.Add(line);
+            }
+            return result;
+        }
+
+        private Dictionary<string, int> GetNameIndex(List<string> contentLines, string rowTemplate)
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            
+            // ищем столбец с именем
+            string[] columns = rowTemplate.Split('|');
+            int nameColumn = -1;
+            for (int i = 0; i < columns.Length; i++)
+                if (columns[i].Contains("_name"))
+                {
+                    nameColumn = i;
+                    break;
+                }
+
+            if (nameColumn == -1)
+                return result;
+
+            // ищем смещение имени в столбце
+            string nameStr = "†_name†";
+            int namePos = columns[nameColumn].IndexOf(nameStr);
+            int tailLen = columns[nameColumn].Length - (namePos + nameStr.Length);
+            string begin = columns[nameColumn].Substring(0, namePos);
+            string end = columns[nameColumn].Substring(namePos + nameStr.Length);
+
+            // строим индекс
+            for (int i = 0; i < contentLines.Count; i++)
+            {
+                string[] cols = contentLines[i].Split('|');
+                if (cols.Length == columns.Length && cols[nameColumn].StartsWith(begin) && cols[nameColumn].EndsWith(end))
+                {
+                    // это строка шаблона, ищем имя
+                    string name = cols[nameColumn].Substring(namePos, cols[nameColumn].Length - namePos - tailLen);
+                    if (!result.ContainsKey(name))
+                        result.Add(name, i);
+                    else
+                        Console.WriteLine($"TemplateFiller.GetNameIndex WARNING: key '{name}' duplicated");
+                }
+            }
+
+            return result;
+        }
+
 
         private (string toReplace, string rowTemplate) GetRowTemplate(string template, string tableName)
         {

@@ -33,7 +33,7 @@ h3. Упоминается в:
 
 h3. Результаты тестирования:
 
-†testResult†|†compareResults†|†timePercent†|†timeAbsolute†|†error†|†msQuery†|†pgQuery†|
+†testResult†|†compareResults†|†testMStime†|†testPGtime†|†error†|†msQuery†|†pgQuery†|
 
 
 
