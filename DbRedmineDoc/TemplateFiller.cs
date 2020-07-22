@@ -7,8 +7,9 @@ namespace DbRedmineDoc
 {
     public class TemplateFiller
     {
-        private string commentStart = "{{desc";
-        private string commentEnd = "}}";
+        private const string commentStart = "{{desc";
+        private const string commentEnd = "}}";
+        private const string webNewLine = "\n";
 
         private string Place(string key)
     {
@@ -80,7 +81,7 @@ namespace DbRedmineDoc
                 if (nameIndex.ContainsKey(i.Name))
                     contentLines[nameIndex[i.Name]] = strRow.ToString();
                 else
-                    append.AppendLine(strRow.ToString());
+                    append.AppendLine(strRow.ToString()); //////////// если длина append меньше шаблона из которого он сделан - значит ничего не добавляем
             }
 
             // собираем обновленные строки
@@ -88,7 +89,7 @@ namespace DbRedmineDoc
             for (int i = 0; i < contentLines.Count; i++)
                 result.AppendLine(contentLines[i]);
 
-            string resultBuilded = result.ToString() + append.ToString();
+            string resultBuilded = result.ToString() + (template.Length < append.Length ? append.ToString() : "");
             return template.Length < resultBuilded.Length ? resultBuilded : string.Empty;
         }
 
@@ -184,7 +185,7 @@ namespace DbRedmineDoc
             List<(int placeIndex, int currentIndex)> replaceList = new List<(int, int)>();
             Func<string, int, string> startLine = (string content, int pos) =>
                 {
-                    int newLinePos = content.LastIndexOf(Environment.NewLine, pos) + Environment.NewLine.Length;
+                    int newLinePos = content.LastIndexOf(webNewLine, pos) + webNewLine.Length;
                     return content.Substring(newLinePos, pos - newLinePos);
                 };
 

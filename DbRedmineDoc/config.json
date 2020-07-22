@@ -9,7 +9,7 @@
 		"GitRootPath": "C:\\GIT\\AICS",
 		"GitSourcesMask": "*.cs",
 		"PgGitRootPath": "C:\\GIT\\GRIP\\grip-db",
-		"TestResultFilePath": "C:\\Projects\\_Core\\MigrationTestMS2PG\\bin\\Release\\netcoreapp3.1\\publish\\testreport.txt",
-		"TestQueriesPath": "C:\\Projects\\_Core\\MigrationTestMS2PG\\bin\\Release\\netcoreapp3.1\\publish\\testreport_queries.txt"
+		"TestResultFilePath": "C:\\automation\\MigrationTestMS2PG\\testreport.txt",
+		"TestQueriesPath": "C:\\automation\\MigrationTestMS2PG\\testreport_queries.txt"
 	}
 }
