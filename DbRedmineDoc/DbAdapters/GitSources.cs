@@ -25,6 +25,11 @@ namespace DbRedmineDoc.DbAdapters
                 d["codeCalls"] = "0";
             }
 
+            if (!Directory.Exists(projectRoot))
+            {
+                Console.WriteLine($"GitSources: path {projectRoot} not exist");
+                return list;
+            }
             var files = GetFiles(projectRoot);
             char[] mustStartWith = new char[] { ' ', '[', '.' };
             char[] mustEndWith = new char[] { ' ', ']', '(' };
